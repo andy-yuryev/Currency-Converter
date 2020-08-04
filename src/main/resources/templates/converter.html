@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>Конвертер валюты</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -7,28 +7,28 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 </head>
-<body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="/">Конвертер</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/history">История</a>
-            </li>
-        </ul>
-    </div>
-    <form action="/logout" method="post">
-        <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+<body class="bg-light">
+<nav class="navbar navbar-expand-lg navbar-light justify-content-end">
+    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person-fill" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+    </svg>
+    <span class="navbar-text mr-4 ml-2" sec:authentication="name"/>
+    <form th:action="@{/logout}" method="post">
         <button class="btn btn-primary">Выйти</button>
     </form>
 </nav>
-<h2 class="text-center m-5">Конвертер</h2>
-<div class="container">
-    <div class="form-group">
-        <form action="/" method="post">
-            <div class="row justify-content-center">
+<div class="container border bg-white shadow rounded py-4 my-3">
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link waves-effect waves-light active" href="/">Конвертер</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link waves-effect waves-light" href="/history">История</a>
+        </li>
+    </ul>
+    <div class="container">
+        <form th:action="@{/}" method="post">
+            <div class="row justify-content-center mt-5">
                 <div class="form-group col-md-4">
                     <select class="form-control" name="sourceCurrencyId">
                         <option th:each="currency : ${currencies}"
@@ -48,15 +48,14 @@
             </div>
             <div class="row justify-content-center">
                 <div class="form-group col-md-4">
-                    <input type="text" class="form-control" name="amount" th:value="${amount != null} ? ${amount} : ''">
+                    <input type="text" class="form-control" name="amount" th:value="${amount}">
                 </div>
                 <div class="form-group col-md-4">
                     <input type="text" readonly class="form-control" name="convertedAmount" th:value="${convertedAmount}">
                 </div>
             </div>
             <div class="row mt-4 justify-content-center">
-                <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
-                <button type="submit" class="btn btn-primary">Конвертировать</button>
+                <button class="btn btn-primary">Конвертировать</button>
             </div>
         </form>
     </div>

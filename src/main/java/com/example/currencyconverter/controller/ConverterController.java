@@ -55,12 +55,16 @@ public class ConverterController {
             Model model
     ) {
         List<Currency> currencies = currencyService.getAllCurrencies();
-        Currency sourceCurrency = currencyService.getCurrencyById(sourceCurrencyId);
-        Currency targetCurrency = currencyService.getCurrencyById(targetCurrencyId);
 
-        BigDecimal convertedAmount = conversionsService.convert(amount, sourceCurrencyId, targetCurrencyId);
-        Conversion conversion = new Conversion(sourceCurrency, targetCurrency, amount, convertedAmount, new Date(System.currentTimeMillis()), user);
-        conversionsService.addConversion(conversion);
+        BigDecimal convertedAmount = null;
+
+        if (amount != null) {
+            Currency sourceCurrency = currencyService.getCurrencyById(sourceCurrencyId);
+            Currency targetCurrency = currencyService.getCurrencyById(targetCurrencyId);
+            convertedAmount = conversionsService.convert(amount, sourceCurrencyId, targetCurrencyId);
+            Conversion conversion = new Conversion(sourceCurrency, targetCurrency, amount, convertedAmount, new Date(System.currentTimeMillis()), user);
+            conversionsService.addConversion(conversion);
+        }
 
         model.addAttribute("currencies", currencies);
         model.addAttribute("sourceCurrencyId", sourceCurrencyId);

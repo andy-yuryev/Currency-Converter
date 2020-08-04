@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Конвертер валюты</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+</head>
+<body>
+<div class="jumbotron container border bg-white shadow rounded" style="width: 400px;">
+    <form method="post" action="/registration">
+        <p class="lead">Регистрация</p>
+        <div class="form-group">
+            <input type="text" name="username" class="form-control" placeholder="Логин">
+        </div>
+        <div class="form-group">
+            <input type="password" name="password" class="form-control" placeholder="Пароль">
+        </div>
+        <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+        <button type="submit" class="btn btn-lg btn-primary btn-block">Зарегистрироваться</button>
+    </form>
+</div>
+</body>
+</html>

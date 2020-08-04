@@ -1,5 +1,6 @@
 package com.example.currencyconverter.controller;
 
+import com.example.currencyconverter.domain.Conversion;
 import com.example.currencyconverter.domain.Currency;
 import com.example.currencyconverter.domain.User;
 import com.example.currencyconverter.service.ConversionsService;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.List;
 
 @Controller
@@ -56,7 +58,9 @@ public class ConverterController {
         Currency sourceCurrency = currencyService.getCurrencyById(sourceCurrencyId);
         Currency targetCurrency = currencyService.getCurrencyById(targetCurrencyId);
 
-        BigDecimal convertedAmount = conversionsService.convert(amount, sourceCurrencyId, targetCurrencyId, user);
+        BigDecimal convertedAmount = conversionsService.convert(amount, sourceCurrencyId, targetCurrencyId);
+        Conversion conversion = new Conversion(sourceCurrency, targetCurrency, amount, convertedAmount, new Date(System.currentTimeMillis()), user);
+        conversionsService.addConversion(conversion);
 
         model.addAttribute("currencies", currencies);
         model.addAttribute("sourceCurrencyId", sourceCurrencyId);

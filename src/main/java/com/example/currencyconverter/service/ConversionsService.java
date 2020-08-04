@@ -30,7 +30,7 @@ public class ConversionsService {
     @Autowired
     private CurrencyService currencyService;
 
-    public BigDecimal convert(BigDecimal amount, String sourceCurrencyId, String targetCurrencyId, User user) {
+    public BigDecimal convert(BigDecimal amount, String sourceCurrencyId, String targetCurrencyId) {
         Date lastRateDate = rateRepository.findLastRateDate();
         Date currentDate = new Date(System.currentTimeMillis());
 
@@ -45,19 +45,11 @@ public class ConversionsService {
         int sourceNominal = sourceCurrencyRate.getNominal();
         int targetNominal = targetCurrencyRate.getNominal();
 
-        BigDecimal convertedAmount = sourceValue
+        return sourceValue
                 .divide(BigDecimal.valueOf(sourceNominal), RoundingMode.HALF_UP)
                 .multiply(amount)
                 .divide(targetValue, RoundingMode.HALF_UP)
                 .multiply(BigDecimal.valueOf(targetNominal));
-
-        Currency sourceCurrency = currencyRepository.findById(sourceCurrencyId);
-        Currency targetCurrency = currencyRepository.findById(targetCurrencyId);
-        Conversion conversion = new Conversion(sourceCurrency, targetCurrency, amount, convertedAmount,
-                new Date(System.currentTimeMillis()), user);
-        conversionRepository.save(conversion);
-
-        return convertedAmount;
     }
 
     public List<Conversion> getAllConversionsByUser(User user) {
@@ -66,5 +58,9 @@ public class ConversionsService {
 
     public List<Conversion> getAllConversionsByUserAndDate(User user, Date date) {
         return conversionRepository.findAllByUserAndDate(user, date);
+    }
+
+    public void addConversion(Conversion conversion) {
+        conversionRepository.save(conversion);
     }
 }

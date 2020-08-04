@@ -19,13 +19,16 @@ import java.time.format.DateTimeFormatter;
 @Component
 public class XmlParser {
 
+    @Value("${XmlParser.URL}")
+    private String URL;
+
     public CurrenciesDto parse() {
         CurrenciesDto currenciesDto = new CurrenciesDto();
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String date = dtf.format(LocalDate.now());
 
         try {
-            URL url = new URL("http://www.cbr.ru/scripts/XML_daily.asp?date_req=" + date);
+            URL url = new URL(URL + date);
             URLConnection urlConnection = url.openConnection();
             InputStream is = new BufferedInputStream(urlConnection.getInputStream());
             XMLInputFactory xmlInputFactory = XMLInputFactory.newFactory();

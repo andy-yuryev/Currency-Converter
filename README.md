@@ -12,7 +12,7 @@ mvnw clean install
 
 - Запуск
 ```
-java -jar target/
+java -jar target/currency-converter-0.0.1-SNAPSHOT.jar
 ```
 
 По умолчанию приложение работает на порту 8080.

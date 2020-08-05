@@ -1,7 +1,6 @@
 package com.example.currencyconverter.service;
 
 import com.example.currencyconverter.domain.Conversion;
-import com.example.currencyconverter.domain.Currency;
 import com.example.currencyconverter.domain.Rate;
 import com.example.currencyconverter.domain.User;
 import com.example.currencyconverter.repository.ConversionRepository;
@@ -35,7 +34,7 @@ public class ConversionsService {
         Date currentDate = new Date(System.currentTimeMillis());
 
         if (lastRateDate == null || !lastRateDate.toLocalDate().equals(currentDate.toLocalDate())) {
-            currencyService.loadCurrenciesFromXml();
+            currencyService.loadCurrenciesFromCbr();
         }
 
         Rate sourceCurrencyRate = rateRepository.findByCurrencyIdAndDate(sourceCurrencyId, currentDate);

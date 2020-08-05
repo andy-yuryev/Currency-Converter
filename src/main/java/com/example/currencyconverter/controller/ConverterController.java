@@ -5,7 +5,6 @@ import com.example.currencyconverter.domain.Currency;
 import com.example.currencyconverter.domain.User;
 import com.example.currencyconverter.service.ConversionsService;
 import com.example.currencyconverter.service.CurrencyService;
-import com.example.currencyconverter.util.XmlParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
@@ -33,7 +32,7 @@ public class ConverterController {
 
     @EventListener(ApplicationReadyEvent.class)
     public void loadCurrenciesOnStartup() {
-        currencyService.loadCurrenciesFromXml();
+        currencyService.loadCurrenciesFromCbr();
     }
 
     @GetMapping

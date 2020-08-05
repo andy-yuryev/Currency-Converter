@@ -22,12 +22,13 @@ public class CurrencyService {
     private CurrencyRepository currencyRepository;
 
     @Autowired
+    private XmlParser xmlParser;
+
+    @Autowired
     private RateRepository rateRepository;
 
     public void loadCurrenciesFromXml() {
-        XmlParser parser = new XmlParser();
-
-        CurrenciesDto currenciesDto = parser.parse();
+        CurrenciesDto currenciesDto = xmlParser.parse();
         List<CurrencyDto> currencyList = currenciesDto.getCurrencyList();
 
         Date lastRateDate = rateRepository.findLastRateDate();

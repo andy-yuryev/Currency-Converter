@@ -19,8 +19,8 @@ import java.time.format.DateTimeFormatter;
 @Component
 public class XmlParser {
 
-    @Value("${XmlParser.URL}")
-    private String URL;
+    @Value("${cbr.url}")
+    private String cbrUrl;
 
     public CurrenciesDto parse() {
         CurrenciesDto currenciesDto = new CurrenciesDto();
@@ -28,7 +28,7 @@ public class XmlParser {
         String date = dtf.format(LocalDate.now());
 
         try {
-            URL url = new URL(URL + date);
+            URL url = new URL(cbrUrl);
             URLConnection urlConnection = url.openConnection();
             InputStream is = new BufferedInputStream(urlConnection.getInputStream());
             XMLInputFactory xmlInputFactory = XMLInputFactory.newFactory();

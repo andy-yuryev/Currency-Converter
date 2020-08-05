@@ -9,7 +9,7 @@ import java.sql.Date;
 public class Rate {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rate_sequence")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 

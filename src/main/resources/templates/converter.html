@@ -30,6 +30,7 @@
         <form th:action="@{/}" method="post">
             <div class="row justify-content-center mt-5">
                 <div class="form-group col-md-4">
+                    <label>У меня есть</label>
                     <select class="form-control" name="sourceCurrencyId">
                         <option th:each="currency : ${currencies}"
                                 th:value="${currency.id}"
@@ -38,6 +39,7 @@
                     </select>
                 </div>
                 <div class="form-group col-md-4">
+                    <label>Хочу приобрести</label>
                     <select class="form-control" name="targetCurrencyId">
                         <option th:each="currency : ${currencies}"
                                 th:value="${currency.id}"
@@ -51,7 +53,8 @@
                     <input type="text" class="form-control" name="amount" th:value="${amount}">
                 </div>
                 <div class="form-group col-md-4">
-                    <input type="text" readonly class="form-control" name="convertedAmount" th:value="${convertedAmount}">
+                    <input type="text" readonly class="form-control" name="convertedAmount"
+                           th:value="${convertedAmount}">
                 </div>
             </div>
             <div class="row mt-4 justify-content-center">

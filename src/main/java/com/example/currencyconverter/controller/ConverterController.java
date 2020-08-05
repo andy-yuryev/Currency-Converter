@@ -3,7 +3,7 @@ package com.example.currencyconverter.controller;
 import com.example.currencyconverter.domain.Conversion;
 import com.example.currencyconverter.domain.Currency;
 import com.example.currencyconverter.domain.User;
-import com.example.currencyconverter.service.ConversionsService;
+import com.example.currencyconverter.service.ConverterService;
 import com.example.currencyconverter.service.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -25,14 +25,14 @@ import java.util.List;
 public class ConverterController {
 
     @Autowired
-    private ConversionsService conversionsService;
+    private ConverterService converterService;
 
     @Autowired
     private CurrencyService currencyService;
 
     @EventListener(ApplicationReadyEvent.class)
     public void loadCurrenciesOnStartup() {
-        currencyService.loadCurrenciesFromCbr();
+        currencyService.loadCurrenciesFromCbr(new Date(System.currentTimeMillis()));
     }
 
     @GetMapping
@@ -61,9 +61,9 @@ public class ConverterController {
         if (amount != null) {
             Currency sourceCurrency = currencyService.getCurrencyById(sourceCurrencyId);
             Currency targetCurrency = currencyService.getCurrencyById(targetCurrencyId);
-            convertedAmount = conversionsService.convert(amount, sourceCurrencyId, targetCurrencyId);
+            convertedAmount = converterService.convert(amount, sourceCurrencyId, targetCurrencyId, new Date(System.currentTimeMillis() - 3_600_000));
             Conversion conversion = new Conversion(sourceCurrency, targetCurrency, amount, convertedAmount, new Date(System.currentTimeMillis()), user);
-            conversionsService.addConversion(conversion);
+            converterService.addConversion(conversion);
         }
 
         model.addAttribute("currencies", currencies);

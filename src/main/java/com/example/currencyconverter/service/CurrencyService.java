@@ -46,20 +46,18 @@ public class CurrencyService {
         return currencyRepository.findAll();
     }
 
-    public void loadCurrenciesFromCbr() {
-        CurrenciesDto currenciesDto = parseXml();
-        List<CurrencyDto> currencyList = currenciesDto.getCurrencyList();
+    public void loadCurrenciesFromCbr(Date date) {
+        boolean dbContainsDate = rateRepository.findRateDate(date);
 
-        Date lastRateDate = rateRepository.findLastRateDate();
-        Date currentDate = new Date(System.currentTimeMillis());
-
-        if (lastRateDate != null && lastRateDate.toLocalDate().equals(currentDate.toLocalDate())) {
+        if (dbContainsDate) {
             return;
         }
 
-        Currency rubleCurrency = new Currency("R00001", "643", "RUB", "Российский рубль");
-        Rate rubleRate = new Rate(rubleCurrency, 1, new BigDecimal(1), currentDate);
+        CurrenciesDto currenciesDto = parseXml(date);
+        List<CurrencyDto> currencyList = currenciesDto.getCurrencyList();
 
+        Currency rubleCurrency = new Currency("R00001", "643", "RUB", "Российский рубль");
+        Rate rubleRate = new Rate(rubleCurrency, 1, new BigDecimal(1), date);
         currencyRepository.save(rubleCurrency);
         rateRepository.save(rubleRate);
 
@@ -71,13 +69,13 @@ public class CurrencyService {
         }
     }
 
-    private CurrenciesDto parseXml() {
+    private CurrenciesDto parseXml(Date date) {
         CurrenciesDto currenciesDto = new CurrenciesDto();
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        String date = dtf.format(LocalDate.now());
+        String dateReq = dtf.format(LocalDate.parse(String.valueOf(date)));
 
         try {
-            URL url = new URL(cbrUrl);
+            URL url = new URL(cbrUrl + "?date_req=" + dateReq);
             URLConnection urlConnection = url.openConnection();
             InputStream is = new BufferedInputStream(urlConnection.getInputStream());
             XMLInputFactory xmlInputFactory = XMLInputFactory.newFactory();

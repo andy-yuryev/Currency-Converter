@@ -15,7 +15,7 @@ import java.sql.Date;
 import java.util.List;
 
 @Service
-public class ConversionsService {
+public class ConverterService {
 
     @Autowired
     private CurrencyRepository currencyRepository;
@@ -29,16 +29,15 @@ public class ConversionsService {
     @Autowired
     private CurrencyService currencyService;
 
-    public BigDecimal convert(BigDecimal amount, String sourceCurrencyId, String targetCurrencyId) {
-        Date lastRateDate = rateRepository.findLastRateDate();
-        Date currentDate = new Date(System.currentTimeMillis());
+    public BigDecimal convert(BigDecimal amount, String sourceCurrencyId, String targetCurrencyId, Date date) {
+        boolean dbContainsDate = rateRepository.findRateDate(date);
 
-        if (lastRateDate == null || !lastRateDate.toLocalDate().equals(currentDate.toLocalDate())) {
-            currencyService.loadCurrenciesFromCbr();
+        if (!dbContainsDate ) {
+            currencyService.loadCurrenciesFromCbr(date);
         }
 
-        Rate sourceCurrencyRate = rateRepository.findByCurrencyIdAndDate(sourceCurrencyId, currentDate);
-        Rate targetCurrencyRate = rateRepository.findByCurrencyIdAndDate(targetCurrencyId, currentDate);
+        Rate sourceCurrencyRate = rateRepository.findByCurrencyIdAndDate(sourceCurrencyId, date);
+        Rate targetCurrencyRate = rateRepository.findByCurrencyIdAndDate(targetCurrencyId, date);
         BigDecimal sourceValue = sourceCurrencyRate.getValue();
         BigDecimal targetValue = targetCurrencyRate.getValue();
         int sourceNominal = sourceCurrencyRate.getNominal();

@@ -3,7 +3,7 @@ package com.example.currencyconverter.controller;
 import com.example.currencyconverter.domain.Conversion;
 import com.example.currencyconverter.domain.Currency;
 import com.example.currencyconverter.domain.User;
-import com.example.currencyconverter.service.ConversionsService;
+import com.example.currencyconverter.service.ConverterService;
 import com.example.currencyconverter.service.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,7 +25,7 @@ public class ConversionController {
     private CurrencyService currencyService;
 
     @Autowired
-    private ConversionsService conversionsService;
+    private ConverterService converterService;
 
     @GetMapping
     public String history(
@@ -39,9 +39,9 @@ public class ConversionController {
         List<Conversion> conversions;
 
         if (date == null || date.isEmpty()) {
-            conversions = conversionsService.getAllConversionsByUser(user);
+            conversions = converterService.getAllConversionsByUser(user);
         } else {
-            conversions = conversionsService.getAllConversionsByUserAndDate(user, Date.valueOf(date));
+            conversions = converterService.getAllConversionsByUserAndDate(user, Date.valueOf(date));
             model.addAttribute("date", date);
         }
 

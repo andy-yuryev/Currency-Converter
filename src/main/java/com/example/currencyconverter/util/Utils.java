@@ -24,7 +24,7 @@ public class Utils {
         rate.setCurrency(currency);
         rate.setNominal(currencyDto.getNominal());
         rate.setValue(new BigDecimal(currencyDto.getValue().replace(",", ".")));
-        rate.setDate(new Date(System.currentTimeMillis()));
+        rate.setDate();
         return rate;
     }
 }

@@ -64,6 +64,7 @@ public class CurrencyService {
         for (CurrencyDto currencyDto : currencyList) {
             Currency currency = Utils.convertCurrencyDtoToCurrency(currencyDto);
             Rate rate = Utils.convertCurrencyDtoToRate(currencyDto);
+            rate.setDate(date);
             currencyRepository.save(currency);
             rateRepository.save(rate);
         }
@@ -72,10 +73,10 @@ public class CurrencyService {
     private CurrenciesDto parseXml(Date date) {
         CurrenciesDto currenciesDto = new CurrenciesDto();
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        String dateReq = dtf.format(LocalDate.parse(String.valueOf(date)));
+        String requiredDate = dtf.format(LocalDate.parse(String.valueOf(date)));
 
         try {
-            URL url = new URL(cbrUrl + "?date_req=" + dateReq);
+            URL url = new URL(cbrUrl + requiredDate);
             URLConnection urlConnection = url.openConnection();
             InputStream is = new BufferedInputStream(urlConnection.getInputStream());
             XMLInputFactory xmlInputFactory = XMLInputFactory.newFactory();

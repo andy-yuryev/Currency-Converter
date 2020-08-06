@@ -42,6 +42,7 @@ public class ConverterController {
         model.addAttribute("currencies", currencies);
         model.addAttribute("sourceCurrencyId", "R00001");
         model.addAttribute("targetCurrencyId", "R00001");
+        model.addAttribute("date", new Date(System.currentTimeMillis()));
 
         return "converter";
     }
@@ -51,6 +52,7 @@ public class ConverterController {
             @RequestParam BigDecimal amount,
             @RequestParam String sourceCurrencyId,
             @RequestParam String targetCurrencyId,
+            @RequestParam Date date,
             @AuthenticationPrincipal User user,
             Model model
     ) {
@@ -61,8 +63,8 @@ public class ConverterController {
         if (amount != null) {
             Currency sourceCurrency = currencyService.getCurrencyById(sourceCurrencyId);
             Currency targetCurrency = currencyService.getCurrencyById(targetCurrencyId);
-            convertedAmount = converterService.convert(amount, sourceCurrencyId, targetCurrencyId, new Date(System.currentTimeMillis() - 3_600_000));
-            Conversion conversion = new Conversion(sourceCurrency, targetCurrency, amount, convertedAmount, new Date(System.currentTimeMillis()), user);
+            convertedAmount = converterService.convert(amount, sourceCurrencyId, targetCurrencyId, date);
+            Conversion conversion = new Conversion(sourceCurrency, targetCurrency, amount, convertedAmount, date, user);
             converterService.addConversion(conversion);
         }
 
@@ -71,6 +73,7 @@ public class ConverterController {
         model.addAttribute("targetCurrencyId", targetCurrencyId);
         model.addAttribute("amount", amount);
         model.addAttribute("convertedAmount", convertedAmount);
+        model.addAttribute("date", date);
 
         return "converter";
     }

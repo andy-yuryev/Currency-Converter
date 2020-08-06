@@ -5,7 +5,6 @@ import com.example.currencyconverter.domain.Rate;
 import com.example.currencyconverter.dto.CurrencyDto;
 
 import java.math.BigDecimal;
-import java.sql.Date;
 
 public class Utils {
 

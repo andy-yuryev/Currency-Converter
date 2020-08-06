@@ -8,6 +8,7 @@ import com.example.currencyconverter.service.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -53,6 +54,7 @@ public class ConverterController {
             @RequestParam BigDecimal amount,
             @RequestParam String sourceCurrencyId,
             @RequestParam String targetCurrencyId,
+//            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
             @RequestParam Date date,
             @AuthenticationPrincipal User user,
             Model model

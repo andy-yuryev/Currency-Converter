@@ -41,8 +41,9 @@ public class ConverterController {
 
         model.addAttribute("currencies", currencies);
         model.addAttribute("sourceCurrencyId", "R00001");
-        model.addAttribute("targetCurrencyId", "R00001");
+        model.addAttribute("targetCurrencyId", "R01235");
         model.addAttribute("date", new Date(System.currentTimeMillis()));
+        model.addAttribute("maxDate", new Date(System.currentTimeMillis()));
 
         return "converter";
     }
@@ -74,6 +75,7 @@ public class ConverterController {
         model.addAttribute("amount", amount);
         model.addAttribute("convertedAmount", convertedAmount);
         model.addAttribute("date", date);
+        model.addAttribute("maxDate", new Date(System.currentTimeMillis()));
 
         return "converter";
     }

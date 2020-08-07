@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Date;
 import java.util.List;
 
@@ -51,7 +52,7 @@ public class ConverterController {
 
     @PostMapping
     public String converter(
-            @RequestParam BigDecimal amount,
+            @RequestParam String amount,
             @RequestParam String sourceCurrencyId,
             @RequestParam String targetCurrencyId,
 //            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
@@ -61,20 +62,22 @@ public class ConverterController {
     ) {
         List<Currency> currencies = currencyService.getAllCurrencies();
 
+        BigDecimal originalAmount = null;
         BigDecimal convertedAmount = null;
 
-        if (amount != null) {
+        if (amount != null && !amount.isEmpty()) {
+            originalAmount = new BigDecimal(amount.replace(",", "."));
             Currency sourceCurrency = currencyService.getCurrencyById(sourceCurrencyId);
             Currency targetCurrency = currencyService.getCurrencyById(targetCurrencyId);
-            convertedAmount = converterService.convert(amount, sourceCurrencyId, targetCurrencyId, date);
-            Conversion conversion = new Conversion(sourceCurrency, targetCurrency, amount, convertedAmount, date, user);
+            convertedAmount = converterService.convert(originalAmount, sourceCurrencyId, targetCurrencyId, date);
+            Conversion conversion = new Conversion(sourceCurrency, targetCurrency, originalAmount, convertedAmount, date, user);
             converterService.addConversion(conversion);
         }
 
         model.addAttribute("currencies", currencies);
         model.addAttribute("sourceCurrencyId", sourceCurrencyId);
         model.addAttribute("targetCurrencyId", targetCurrencyId);
-        model.addAttribute("amount", amount);
+        model.addAttribute("amount", originalAmount);
         model.addAttribute("convertedAmount", convertedAmount);
         model.addAttribute("date", date);
         model.addAttribute("maxDate", new Date(System.currentTimeMillis()));

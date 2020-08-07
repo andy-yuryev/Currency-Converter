@@ -47,7 +47,7 @@ public class ConverterService {
                 .divide(BigDecimal.valueOf(sourceNominal), RoundingMode.HALF_UP)
                 .multiply(amount)
                 .divide(targetValue, RoundingMode.HALF_UP)
-                .multiply(BigDecimal.valueOf(targetNominal));
+                .multiply(BigDecimal.valueOf(targetNominal)).setScale(2, RoundingMode.HALF_UP);
     }
 
     public List<Conversion> getAllConversionsByUser(User user) {

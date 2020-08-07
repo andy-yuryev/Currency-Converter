@@ -7,9 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.ConstraintViolationException;
-import javax.validation.Valid;
-
 @Controller
 @RequestMapping("/registration")
 public class UserController {
@@ -23,9 +20,19 @@ public class UserController {
     }
 
     @PostMapping
-    public String registerUser(@Valid UserDto userDto, Model model) {
-        boolean success = userService.registerUser(userDto.getUsername(), userDto.getPassword());
-        if (!success) {
+    public String registerUser(@RequestParam UserDto userDto, Model model) {
+        String username = userDto.getUsername();
+        String password = userDto.getPassword();
+        if (username == null || username.isEmpty()) {
+            model.addAttribute("error", "Логин не может быть пустым");
+            return "registration";
+        }
+        if (password == null || password.isEmpty()) {
+            model.addAttribute("error", "Пароль не может быть пустым");
+            return "registration";
+        }
+        boolean registrationSuccessful = userService.registerUser(username, password);
+        if (!registrationSuccessful) {
             model.addAttribute("error", "Логин занят");
             return "registration";
         }

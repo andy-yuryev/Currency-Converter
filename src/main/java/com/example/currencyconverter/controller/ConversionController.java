@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,7 +42,7 @@ public class ConversionController {
         if (date == null || date.isEmpty()) {
             conversions = converterService.getAllConversionsByUser(user);
         } else {
-            conversions = converterService.getAllConversionsByUserAndDate(user, Date.valueOf(date));
+            conversions = converterService.getAllConversionsByUserAndDate(user, LocalDate.parse(date));
             model.addAttribute("date", date);
         }
 

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -29,7 +29,7 @@ public class ConverterService {
     @Autowired
     private CurrencyService currencyService;
 
-    public BigDecimal convert(BigDecimal amount, String sourceCurrencyId, String targetCurrencyId, Date date) {
+    public BigDecimal convert(BigDecimal amount, String sourceCurrencyId, String targetCurrencyId, LocalDate date) {
         boolean dbContainsDate = rateRepository.findRateDate(date);
 
         if (!dbContainsDate) {
@@ -54,7 +54,7 @@ public class ConverterService {
         return conversionRepository.findAllByUser(user);
     }
 
-    public List<Conversion> getAllConversionsByUserAndDate(User user, Date date) {
+    public List<Conversion> getAllConversionsByUserAndDate(User user, LocalDate date) {
         return conversionRepository.findAllByUserAndDate(user, date);
     }
 

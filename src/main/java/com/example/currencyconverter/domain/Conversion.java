@@ -2,7 +2,7 @@ package com.example.currencyconverter.domain;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "conversion")
@@ -28,7 +28,7 @@ public class Conversion {
     private BigDecimal convertedAmount;
 
     @Column(name = "date")
-    private Date date;
+    private LocalDate date;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -38,7 +38,7 @@ public class Conversion {
     }
 
     public Conversion(Currency sourceCurrency, Currency targetCurrency, BigDecimal amount, BigDecimal convertedAmount,
-                      Date date, User user) {
+                      LocalDate date, User user) {
         this.sourceCurrency = sourceCurrency;
         this.targetCurrency = targetCurrency;
         this.amount = amount;
@@ -87,11 +87,11 @@ public class Conversion {
         this.convertedAmount = convertedAmount;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

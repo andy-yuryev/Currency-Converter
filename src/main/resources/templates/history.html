@@ -69,7 +69,7 @@
             <td th:text="${conversion.targetCurrency}">
             <td th:text="${conversion.amount}">
             <td th:text="${conversion.convertedAmount}">
-            <td th:text="${#dates.format(conversion.date, 'dd.MM.yyyy')}"></td>
+            <td th:text="${#temporals.format(conversion.date, 'dd-MM-yyyy')}">
         </tr>
         </tbody>
     </table>

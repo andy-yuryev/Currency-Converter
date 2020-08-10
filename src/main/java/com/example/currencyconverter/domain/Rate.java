@@ -2,7 +2,7 @@ package com.example.currencyconverter.domain;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "rate", uniqueConstraints = {@UniqueConstraint(columnNames = {"currency_id", "date"})})
@@ -24,12 +24,12 @@ public class Rate {
     private BigDecimal value;
 
     @Column(name = "date")
-    private Date date;
+    private LocalDate date;
 
     public Rate() {
     }
 
-    public Rate(Currency currency, int nominal, BigDecimal value, Date date) {
+    public Rate(Currency currency, int nominal, BigDecimal value, LocalDate date) {
         this.currency = currency;
         this.nominal = nominal;
         this.value = value;
@@ -68,11 +68,11 @@ public class Rate {
         this.value = value;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 }

@@ -21,7 +21,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.net.URLConnection;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -46,7 +46,7 @@ public class CurrencyService {
         return currencyRepository.findAll();
     }
 
-    public void loadCurrenciesFromCbr(Date date) {
+    public void loadCurrenciesFromCbr(LocalDate date) {
         boolean dbContainsDate = rateRepository.findRateDate(date);
 
         if (dbContainsDate) {
@@ -70,7 +70,7 @@ public class CurrencyService {
         }
     }
 
-    private CurrenciesDto parseXml(Date date) {
+    private CurrenciesDto parseXml(LocalDate date) {
         CurrenciesDto currenciesDto = new CurrenciesDto();
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String requiredDate = dtf.format(LocalDate.parse(String.valueOf(date)));

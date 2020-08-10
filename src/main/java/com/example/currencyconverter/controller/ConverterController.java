@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -33,7 +33,7 @@ public class ConverterController {
 
     @EventListener(ApplicationReadyEvent.class)
     public void loadCurrenciesOnStartup() {
-        currencyService.loadCurrenciesFromCbr(new Date(System.currentTimeMillis()));
+        currencyService.loadCurrenciesFromCbr(LocalDate.now());
     }
 
     @GetMapping
@@ -43,8 +43,8 @@ public class ConverterController {
         model.addAttribute("currencies", currencies);
         model.addAttribute("sourceCurrencyId", "R00001");
         model.addAttribute("targetCurrencyId", "R01235");
-        model.addAttribute("date", new Date(System.currentTimeMillis()));
-        model.addAttribute("maxDate", new Date(System.currentTimeMillis()));
+        model.addAttribute("date", LocalDate.now());
+        model.addAttribute("maxDate", LocalDate.now());
 
         return "converter";
     }
@@ -55,7 +55,7 @@ public class ConverterController {
             @RequestParam String sourceCurrencyId,
             @RequestParam String targetCurrencyId,
 //            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-            @RequestParam Date date,
+            @RequestParam String date,
             @AuthenticationPrincipal User user,
             Model model
     ) {
@@ -66,10 +66,10 @@ public class ConverterController {
 
         if (amount != null && !amount.isEmpty()) {
             originalAmount = new BigDecimal(amount.replace(",", "."));
-            convertedAmount = converterService.convert(originalAmount, sourceCurrencyId, targetCurrencyId, date);
+            convertedAmount = converterService.convert(originalAmount, sourceCurrencyId, targetCurrencyId, LocalDate.parse(date));
             Currency sourceCurrency = currencyService.getCurrencyById(sourceCurrencyId);
             Currency targetCurrency = currencyService.getCurrencyById(targetCurrencyId);
-            Conversion conversion = new Conversion(sourceCurrency, targetCurrency, originalAmount, convertedAmount, date, user);
+            Conversion conversion = new Conversion(sourceCurrency, targetCurrency, originalAmount, convertedAmount, LocalDate.parse(date), user);
             converterService.addConversion(conversion);
         }
 
@@ -79,7 +79,7 @@ public class ConverterController {
         model.addAttribute("amount", originalAmount);
         model.addAttribute("convertedAmount", convertedAmount);
         model.addAttribute("date", date);
-        model.addAttribute("maxDate", new Date(System.currentTimeMillis()));
+        model.addAttribute("maxDate", LocalDate.now());
 
         return "converter";
     }

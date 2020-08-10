@@ -43,7 +43,6 @@ public class HistoryController {
             conversions = converterService.getAllConversionsByUser(user);
         } else {
             conversions = converterService.getAllConversionsByUserAndDate(user, LocalDate.parse(date));
-            model.addAttribute("date", date);
         }
 
         if (sourceCurrencyId != null && !sourceCurrencyId.equals("0")) {

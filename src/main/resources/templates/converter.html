@@ -47,10 +47,10 @@
             </div>
             <div class="row justify-content-center">
                 <div class="form-group col-md-4">
-                    <input type="text" class="form-control" name="amount" th:value="${amount}">
+                    <input type="number" step="0.01" min=0 class="form-control" name="amount" th:value="${amount}" required>
                 </div>
                 <div class="form-group col-md-4">
-                    <input type="text" readonly class="form-control" name="convertedAmount"
+                    <input type="number" readonly class="form-control" name="convertedAmount"
                            th:value="${convertedAmount}">
                 </div>
             </div>

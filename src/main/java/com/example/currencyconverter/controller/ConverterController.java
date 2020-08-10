@@ -51,7 +51,7 @@ public class ConverterController {
 
     @PostMapping
     public String converter(
-            @RequestParam String amount,
+            @RequestParam BigDecimal amount,
             @RequestParam String sourceCurrencyId,
             @RequestParam String targetCurrencyId,
             @RequestParam String date,
@@ -60,22 +60,16 @@ public class ConverterController {
     ) {
         List<Currency> currencies = currencyService.getAllCurrencies();
 
-        BigDecimal originalAmount = null;
-        BigDecimal convertedAmount = null;
-
-        if (amount != null && !amount.isEmpty()) {
-            originalAmount = new BigDecimal(amount.replace(",", "."));
-            convertedAmount = converterService.convert(originalAmount, sourceCurrencyId, targetCurrencyId, LocalDate.parse(date));
-            Currency sourceCurrency = currencyService.getCurrencyById(sourceCurrencyId);
-            Currency targetCurrency = currencyService.getCurrencyById(targetCurrencyId);
-            Conversion conversion = new Conversion(sourceCurrency, targetCurrency, originalAmount, convertedAmount, LocalDate.parse(date), user);
-            converterService.addConversion(conversion);
-        }
+        BigDecimal convertedAmount = converterService.convert(amount, sourceCurrencyId, targetCurrencyId, LocalDate.parse(date));
+        Currency sourceCurrency = currencyService.getCurrencyById(sourceCurrencyId);
+        Currency targetCurrency = currencyService.getCurrencyById(targetCurrencyId);
+        Conversion conversion = new Conversion(sourceCurrency, targetCurrency, amount, convertedAmount, LocalDate.parse(date), user);
+        converterService.addConversion(conversion);
 
         model.addAttribute("currencies", currencies);
         model.addAttribute("sourceCurrencyId", sourceCurrencyId);
         model.addAttribute("targetCurrencyId", targetCurrencyId);
-        model.addAttribute("amount", originalAmount);
+        model.addAttribute("amount", amount);
         model.addAttribute("convertedAmount", convertedAmount);
         model.addAttribute("date", date);
         model.addAttribute("maxDate", LocalDate.now());

@@ -20,7 +20,7 @@ public class UserController {
     }
 
     @PostMapping
-    public String registerUser(@RequestParam User user, Model model) {
+    public String registerUser(User user, Model model) {
         String username = user.getUsername();
         String password = user.getPassword();
         if (username == null || username.isEmpty()) {

@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.sql.Date;
 import java.util.List;
 
@@ -67,9 +66,9 @@ public class ConverterController {
 
         if (amount != null && !amount.isEmpty()) {
             originalAmount = new BigDecimal(amount.replace(",", "."));
+            convertedAmount = converterService.convert(originalAmount, sourceCurrencyId, targetCurrencyId, date);
             Currency sourceCurrency = currencyService.getCurrencyById(sourceCurrencyId);
             Currency targetCurrency = currencyService.getCurrencyById(targetCurrencyId);
-            convertedAmount = converterService.convert(originalAmount, sourceCurrencyId, targetCurrencyId, date);
             Conversion conversion = new Conversion(sourceCurrency, targetCurrency, originalAmount, convertedAmount, date, user);
             converterService.addConversion(conversion);
         }

@@ -32,7 +32,7 @@ public class ConverterService {
     public BigDecimal convert(BigDecimal amount, String sourceCurrencyId, String targetCurrencyId, Date date) {
         boolean dbContainsDate = rateRepository.findRateDate(date);
 
-        if (!dbContainsDate ) {
+        if (!dbContainsDate) {
             currencyService.loadCurrenciesFromCbr(date);
         }
 

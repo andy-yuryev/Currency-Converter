@@ -1,18 +1,21 @@
-# Конвертер валют
+# Currency Converter
 
-## Запуск приложения
-Для запуска необходимо создать базу данных "converter" и задать настройки для доступа в файле application.properties (адрес, имя пользователя, пароль). 
-Скрипт создания базы данных находится в файле resources/db/migration/V1__Init_DB.sql.
+An application for converting currencies at exchange rate from the Central Bank.
 
-- Сборка
+## Description
+To perform any actions with quizzes a user has to be registered and then authorized.
+
+## Running the application
+To run the application change database propperties in application.properties (url, username, password). By default, it runs on the port `8080`.
+
+- Building app
 
 ```
 mvnw clean install
 ```
 
-- Запуск
+- Running app
 ```
 java -jar target/currency-converter-0.0.1-SNAPSHOT.jar
 ```
 
-По умолчанию приложение работает на порту 8080.

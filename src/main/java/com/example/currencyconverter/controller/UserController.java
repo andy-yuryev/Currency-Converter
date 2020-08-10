@@ -1,6 +1,6 @@
 package com.example.currencyconverter.controller;
 
-import com.example.currencyconverter.dto.UserDto;
+import com.example.currencyconverter.domain.User;
 import com.example.currencyconverter.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,9 +20,9 @@ public class UserController {
     }
 
     @PostMapping
-    public String registerUser(@RequestParam UserDto userDto, Model model) {
-        String username = userDto.getUsername();
-        String password = userDto.getPassword();
+    public String registerUser(@RequestParam User user, Model model) {
+        String username = user.getUsername();
+        String password = user.getPassword();
         if (username == null || username.isEmpty()) {
             model.addAttribute("error", "Логин не может быть пустым");
             return "registration";

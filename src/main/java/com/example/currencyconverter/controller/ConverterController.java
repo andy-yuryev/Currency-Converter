@@ -54,7 +54,6 @@ public class ConverterController {
             @RequestParam String amount,
             @RequestParam String sourceCurrencyId,
             @RequestParam String targetCurrencyId,
-//            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
             @RequestParam String date,
             @AuthenticationPrincipal User user,
             Model model

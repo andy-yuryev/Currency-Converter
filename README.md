@@ -18,3 +18,8 @@ mvnw clean install
 java -jar target/currency-converter-0.0.1-SNAPSHOT.jar
 ```
 
+![](логин.jpg)
+
+![](конвертер.jpg)
+
+![](история.jpg)

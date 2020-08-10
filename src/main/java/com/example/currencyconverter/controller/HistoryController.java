@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/history")
-public class ConversionController {
+public class HistoryController {
 
     @Autowired
     private CurrencyService currencyService;
@@ -62,6 +62,7 @@ public class ConversionController {
 
         model.addAttribute("currencies", currencies);
         model.addAttribute("conversions", conversions);
+        model.addAttribute("maxDate", LocalDate.now());
 
         return "history";
     }

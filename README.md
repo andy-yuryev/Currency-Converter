@@ -10,7 +10,7 @@ To run the application change database properties in application.properties (url
 - Building app
 
 ```
-mvnw clean install
+./mvnw clean install
 ```
 
 - Running app

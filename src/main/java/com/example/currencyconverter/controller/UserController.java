@@ -1,11 +1,20 @@
 package com.example.currencyconverter.controller;
 
-import com.example.currencyconverter.domain.User;
+import com.example.currencyconverter.dto.UserDto;
 import com.example.currencyconverter.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.validation.Valid;
+import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/registration")
@@ -20,22 +29,22 @@ public class UserController {
     }
 
     @PostMapping
-    public String registerUser(User user, Model model) {
-        String username = user.getUsername();
-        String password = user.getPassword();
-        if (username == null || username.isEmpty()) {
-            model.addAttribute("error", "Логин не может быть пустым");
+    public String registerUser(@Valid UserDto user, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            Collector<FieldError, ?, Map<String, String>> collector = Collectors.toMap(
+                    fieldError -> fieldError.getField() + "Error",
+                    FieldError::getDefaultMessage
+            );
+            Map<String, String> errors = bindingResult.getFieldErrors().stream().collect(collector);
+            model.mergeAttributes(errors);
             return "registration";
         }
-        if (password == null || password.isEmpty()) {
-            model.addAttribute("error", "Пароль не может быть пустым");
+
+        if (!userService.registerUser(user)) {
+            model.addAttribute("usernameError", "Логин занят");
             return "registration";
         }
-        boolean registrationSuccessful = userService.registerUser(username, password);
-        if (!registrationSuccessful) {
-            model.addAttribute("error", "Логин занят");
-            return "registration";
-        }
+
         return "redirect:/login";
     }
 }

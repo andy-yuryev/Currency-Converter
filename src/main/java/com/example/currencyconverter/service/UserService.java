@@ -1,6 +1,7 @@
 package com.example.currencyconverter.service;
 
 import com.example.currencyconverter.domain.User;
+import com.example.currencyconverter.dto.UserDto;
 import com.example.currencyconverter.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,14 +25,13 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("User %s not found", username)));
     }
 
-    public boolean registerUser(String username, String password) {
+    public boolean registerUser(UserDto userDto) {
         try {
-            loadUserByUsername(username);
+            loadUserByUsername(userDto.getUsername());
             return false;
         } catch (UsernameNotFoundException ignored) {
         }
-        String encodedPassword = encoder.encode(password);
-        User user = new User(username, encodedPassword);
+        User user = new User(userDto.getUsername(), encoder.encode(userDto.getPassword()));
         userRepository.save(user);
         return true;
     }

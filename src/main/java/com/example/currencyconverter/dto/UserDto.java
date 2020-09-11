@@ -5,7 +5,8 @@ import javax.validation.constraints.Size;
 
 public class UserDto {
 
-    @Pattern(regexp = "\\w+", message = "Логин должен содержать только латинские буквы, цифры, нижнее подчеркивание и дефис")
+    @Pattern(regexp = "\\w+",
+            message = "Логин должен содержать только латинские буквы, цифры, нижнее подчеркивание и дефис")
     @Size(max = 30, message = "Логин должен содержать не более 30 символов")
     private String username;
 
